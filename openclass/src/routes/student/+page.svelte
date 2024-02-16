@@ -8,7 +8,7 @@
   $: students = ($page.data as PageData).student;
 </script>
 
-<h1>Students List</h1>
+<h1>Students Lists</h1>
 <div>
   <input type="text" bind:value={firstName} placeholder="First Name" />
   <input type="text" bind:value={lastName} placeholder="Last Name" />
