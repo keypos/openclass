@@ -34,6 +34,10 @@
 </div>
 
 <style>
+    *{
+        font-family: 'Work Sans', sans-serif;
+        font-size: 14px;
+    }
     .login {
         display: flex;
         justify-content: center;
@@ -47,31 +51,27 @@
         align-items: center;
         width: 300px;
         padding: 20px;
-        border: 1px solid #ccc;
+        border: 1px solid #cccccc;
         border-radius: 8px;
     }
 
     input {
-        font-family: 'Work Sans', sans-serif;
-        font-size: 14px;
         margin-bottom: 10px;
         padding: 10px;
         width: 100%;
         box-sizing: border-box;
-        border: 1px solid #ccc;
+        border: 1px solid #cccccc;
         border-radius: 8px;
     }
 
     button {
-        font-family: 'Work Sans', sans-serif;
-        font-size: 14px;
         font-weight: 500;
         color: #FFFFFF;
         padding: 10px;
         width: 100%;
         cursor: pointer;
         background-color: #3c8afe;
-        border: 1px solid #ccc;
+        border: 1px solid #cccccc;
         border-radius: 8px;
         box-sizing: border-box;
     }
