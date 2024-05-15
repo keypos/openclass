@@ -34,8 +34,7 @@
 </div>
 
 <style>
-    *{
-        font-family: 'Work Sans', sans-serif;
+    * {
         font-size: 14px;
     }
     .login {
