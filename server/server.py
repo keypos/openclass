@@ -251,7 +251,7 @@ def update_subject(id):
 @app.route("/assessments/<int:id>", methods=["PUT"])
 def update_assessment(id):
     assessment = request.json
-    db.session.execute(text("UPDATE assessment SET assessment_name = :assessment_name, subject_id = :subject_id WHERE assessment_id = :id"), {**assessment, "id": id})
+    db.session.execute(text("UPDATE assessment SET assessment_name = :assessment_name, max_mark = :max_mark, subject_id = :subject_id WHERE assessment_id = :id"), {**assessment, "id": id})
     db.session.commit()
     
     return jsonify({"message": "Assessment updated"})
@@ -280,3 +280,66 @@ def teachers():
         teachers.append(teacher)
     
     return jsonify(teachers)
+
+@app.route("/change-password", methods=["POST"])
+def change_password():
+    data = request.json
+    old_password = data.get('old_password')
+    new_password = data.get('new_password')
+
+    user_id = 1
+
+    result = db.session.execute(text("SELECT password FROM teacher WHERE id = :teacher_id"), {'teacher_id': user_id}).fetchone()
+
+    if result is None:
+        return jsonify({"message": "User not found"}), 404
+
+    stored_password = result['password']
+
+    if stored_password != old_password:
+        return jsonify({"message": "Incorrect old password"}), 400
+
+    db.session.execute(text("UPDATE teacher SET password = :new_password WHERE id = :teacher_id"), 
+                       {'new_password': new_password, 'teacher_id': teacher_id})
+    db.session.commit()
+
+    return jsonify({"message": "Password changed successfully"})
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    result = db.session.execute(text("SELECT email, password FROM teacher WHERE teacher_id = 1")).fetchone()
+
+    if result is None:
+        return jsonify({"message": "User not found"}), 404
+
+    stored_email, stored_password = result
+
+    # Check if the provided email and password match
+    if stored_email != email or stored_password != password:
+        return jsonify({"message": "Invalid email or password"}), 401
+
+    # Login successful
+    return jsonify({"message": "Login successful"}), 200
+
+@app.route("/students_in_subject/<int:subject_id>")
+def students_in_subject(subject_id):
+    query = """
+        SELECT DISTINCT s.student_id, s.first_name, s.last_name
+        FROM student s
+        JOIN student_subjects ss ON s.student_id = ss.student_id
+        WHERE ss.subject_id = :subject_id
+    """
+    params = {'subject_id': subject_id}
+    
+    result = db.session.execute(text(query), params)
+    
+    students = []
+    for row in result:
+        student = {key: value for key, value in row._mapping.items()}
+        students.append(student)
+    
+    return jsonify(students)

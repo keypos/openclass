@@ -153,7 +153,7 @@
         </div>
         <div class="comment-list">
             {#each comments as comment (comment.behaviour_id)}
-                <a href="./comments/{comment.behaviour_id}">
+                <a href="../comments/{comment.behaviour_id}">
                     <div class="comment-card">
                         <b>{comment.comment_date}</b>
                         <p>{comment.comment}</p>

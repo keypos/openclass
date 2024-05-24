@@ -1,7 +1,33 @@
-<script lang=ts>
+<script lang="ts">
     import Navbar from "../Navbar.svelte";
     let password = "";
-    let newassword = "";
+    let newpassword = "";
+
+    async function changePassword() {
+        try {
+            const response = await fetch('http://localhost:5000/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    old_password: password,
+                    new_password: newpassword
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+                return;
+            }
+
+            const result = await response.json();
+            alert(result.message);
+        } catch (error) {
+            alert('Password successfully changed');
+        }
+    }
 </script>
 
 <Navbar />
@@ -9,10 +35,11 @@
 <div class="login">
     <form on:submit|preventDefault={changePassword}>
         <input type="password" placeholder="Old Password" bind:value={password} required>
-        <input type="password" placeholder="New Password" bind:value={password} required>
+        <input type="password" placeholder="New Password" bind:value={newpassword} required>
         <button type="submit">Change Password</button>
     </form>
 </div>
+
 <style>
     * {
         font-size: 16px;

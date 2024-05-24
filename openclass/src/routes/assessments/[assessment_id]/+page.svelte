@@ -10,7 +10,14 @@
       assessment_id: number;
       assessment_name: string;
       subject_id: number;
+      max_mark: number;
     };
+
+    type Student = {
+        student_id: number;
+        first_name: string;
+        last_name: string;
+    }
 
     type Subject = {
         subject_id: number;
@@ -19,16 +26,24 @@
 
     let subjects: Subject[] = [];
 
+    let students: Student[] = [];
+
+    let assessment: Assessment;
+
     async function fetchSubjects() {
         const response = await fetch('http://localhost:5000/subjects');
         subjects = await response.json();
     }
 
-    let assessment: Assessment;
-
     async function assessmentInfo() {
         const response = await fetch(`http://localhost:5000/assessments/${assessment_id}`);
         assessment = await response.json();
+    }
+
+    async function fetchStudents() {
+        const response = await fetch(`http://localhost:5000/students_in_subject/${assessment_id}`);
+        students = await response.json();
+        console.log(students)
     }
 
     async function updateAssessment() {
@@ -61,6 +76,7 @@
 
     onMount(async () => {
         await fetchSubjects();
+        await fetchStudents();
         await assessmentInfo();
     });
 </script>
@@ -72,6 +88,8 @@
         {#if assessment}
             <p>Assessment Name</p>
             <input bind:value={assessment.assessment_name} />
+            <p>Maximum Mark</p>
+            <input bind:value={assessment.max_mark} />
             <p>Subject</p>
             <select class="teachers" bind:value={assessment.subject_id}>
                 {#each subjects as subject (subject.subject_id)}
@@ -84,6 +102,15 @@
             Loading...
         {/if}
     </div>
+    <div class="student-list">
+                {#each students as student (student.student_id)}
+                    <div class="student-card">
+                        <h3>{student.first_name} {student.last_name}</h3>
+                        <p>Mark: <input class="mark" type="number"></p>
+                    </div>
+                {/each}
+                <button on:click={updateAssessment}>Submit Marks</button>
+        </div>
 </div>
 
 
@@ -109,6 +136,10 @@
         margin-top: 0;
         margin-bottom: 20px;
         text-align: center;
+    }
+    .mark {
+        max-width: 80px;
+        height: 32px;
     }
 
     p {
@@ -161,4 +192,39 @@
     .delete:hover {
         background-color: #bd2130;
     }
+
+     .student-list {
+    width: 300px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    padding-left: 50px;
+  }
+
+  .student-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    padding-bottom: 0px;
+    padding-top: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    width: 97%;
+    box-sizing: border-box;
+  }
+
+  .student-card:hover {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+  }
+    h3 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 18px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
 </style>
