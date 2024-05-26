@@ -1,4 +1,33 @@
-CREATE TABLE Student (
+CREATE TABLE address (
+    address_id INT PRIMARY KEY,
+    street VARCHAR(64) NOT NULL,
+    postcode VARCHAR(64) NOT NULL,
+    state VARCHAR(3) NOT NULL
+);
+
+CREATE TABLE guardian (
+    guardian_id INT PRIMARY KEY,
+    address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id),
+    first_name VARCHAR(64) NOT NULL,
+    last_name VARCHAR(64) NOT NULL,
+    dob DATE NOT NULL,
+    email VARCHAR(64) NOT NULL,
+    phone VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE teacher (
+    teacher_id INT PRIMARY KEY,
+    address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id),
+    first_name VARCHAR(64) NOT NULL,
+    last_name VARCHAR(64) NOT NULL,
+    dob DATE NOT NULL,
+    email VARCHAR(64) NOT NULL,
+    phone VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE student (
     student_id INT PRIMARY KEY,
     first_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
@@ -6,4 +35,80 @@ CREATE TABLE Student (
     dob DATE NOT NULL,
     email VARCHAR(64) NOT NULL,
     phone VARCHAR(16) NOT NULL
+);
+
+CREATE TABLE timetable (
+    timetable_id INT PRIMARY KEY,
+    teacher_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+    timetable_date DATE NOT NULL 
+);
+
+CREATE TABLE relationship (
+    relationship_id INT PRIMARY KEY,
+    student_id INT,
+    guardian_id INT,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (guardian_id) REFERENCES guardian(guardian_id),
+    relationship_type VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE subject (
+    subject_id INT PRIMARY KEY,
+    teacher_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+    subject_name VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE assessment (
+    assessment_id INT PRIMARY KEY,
+    subject_id INT,
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
+    assessment_name VARCHAR(64) NOT NULL,
+    max_mark INT NOT NULL,
+    date_due DATE NOT NULL
+);
+
+CREATE TABLE class (
+    class_id INT PRIMARY KEY,
+    subject_id INT,
+    teacher_id INT,
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+);
+
+CREATE TABLE behaviour (
+    behaviour_id VARCHAR(64) PRIMARY KEY,
+    class_id INT,
+    FOREIGN KEY (class_id) REFERENCES class(class_id),
+    comment TEXT NOT NULL,
+    comment_date DATE NOT NULL
+);
+
+CREATE TABLE period (
+    period_id INT PRIMARY KEY,
+    timetable_id INT,
+    class_id INT,
+    FOREIGN KEY (timetable_id) REFERENCES timetable(timetable_id),
+    FOREIGN KEY (class_id) REFERENCES class(class_id),
+    period_number INT NOT NULL,
+    room VARCHAR(64)
+);
+
+CREATE TABLE student_subjects (
+    student_subjects_id INT PRIMARY KEY,
+    subject_id INT,
+    student_id INT,
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
+    FOREIGN KEY (student_id) REFERENCES student(student_id)
+);
+
+CREATE TABLE mark (
+    mark_id INT PRIMARY KEY,
+    student_id INT,
+    assessment_id INT,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (assessment_id) REFERENCES assessment(assessment_id),
+    mark INT NOT NULL,
+    comment TEXT
 );
