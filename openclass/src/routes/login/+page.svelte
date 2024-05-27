@@ -37,6 +37,7 @@
     * {
         font-size: 14px;
     }
+
     .login {
         display: flex;
         justify-content: center;
