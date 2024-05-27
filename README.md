@@ -1,5 +1,11 @@
 # Openclass
 
+Restart database
+```bash
+sudo service postgresql restart
+```
+
 Connect to database
-`psql -U postgres -d open
-class` 
+```bash
+psql -U postgres -d openclass
+```
