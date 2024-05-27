@@ -12,7 +12,7 @@ const pool = new Pool({
 export async function getUsers() {
 	const client = await pool.connect();
 	try {
-		const result = await client.query('SELECT * FROM Student');
+		const result = await client.query('SELECT * FROM student');
 		return result.rows;
 	} finally {
 		client.release();
