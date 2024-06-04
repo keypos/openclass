@@ -19,6 +19,9 @@
         width: 33.33%;
     }
 
+    .row {
+        padding-top: 50px;
+    }
     .row:after {
         content: "";
         display: table;

@@ -20,6 +20,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: fixed;
+        top: 0;
+        width: 100%;
     }
 
     .navbar-logo {
@@ -45,6 +48,10 @@
         text-decoration: none;
         color: white;
     }
+    .navbar-link:hover {
+        color: #5697f9;
+    }
+
     .logo{
         color: #5697f9;
         font-size: 18px;
