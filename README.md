@@ -1,11 +1,15 @@
 # Openclass
 
-Restart database
-```bash
-sudo service postgresql restart
-```
+## Prerequisites
+ - Python 3.12 or higher
+ - Node.js
+ - SQLite 3
+   - Download sqlite from https://sqlite.org/2024/sqlite-dll-win-x64-3460000.zip
 
-Connect to database
-```bash
-psql -U postgres -d openclass
-```
+## Production
+ - Run the script ```run.bat``` for windows or ```run.sh``` for linux
+
+## Development
+ - CD into the server folder ```cd server```
+ - Install python requirements with ```pip install -r requirements.txt```
+ - Run the server with ```flask --app server run --debug```
