@@ -8,7 +8,7 @@ db = SQLAlchemy(app)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<p>Server is running</p>"
 
 @app.route("/students")
 def students():

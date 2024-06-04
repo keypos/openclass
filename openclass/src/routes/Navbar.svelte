@@ -14,7 +14,7 @@
 <style>
     .navbar {
         font-weight: 400;
-        background-color: #1c2022;
+        background-color: #0c0e0f;
         color: #FFFFFF;
         padding: 14px 20px;
         display: flex;
