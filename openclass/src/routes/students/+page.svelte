@@ -1,39 +1,39 @@
-<script lang="ts">
-	import Navbar from "../Navbar.svelte";
+<script lang=ts>
+  import Navbar from "../Navbar.svelte";
 
-    let create_firstName = '';
-    let create_lastName = '';
-    let create_grade = '';
-    let create_email = '';
-    let create_phone = '';
+  let create_firstName = '';
+  let create_lastName = '';
+  let create_grade = '';
+  let create_email = '';
+  let create_phone = '';
 
-    let firstName = '';
-    let lastName = '';
-    let grade = '';
+  let firstName = '';
+  let lastName = '';
+  let grade = '';
 
-    type Student = {
-        student_id: number;
-        first_name: string;
-        last_name: string;
-        grade: string;
-    };
+  type Student = {
+      student_id: number;
+      first_name: string;
+      last_name: string;
+      grade: string;
+  };
 
-    let students: Student[] = [];
+  let students: Student[] = [];
 
-    async function createStudent() {
-        let url = 'http://localhost:5000/students?';
-      
-    }
+  async function createStudent() {
+      let url = 'http://localhost:5000/students?';
+    
+  }
 
-    async function searchStudents() {
-        let url = 'http://localhost:5000/students?';
-        if (firstName) url += `first_name=${firstName}&`;
-        if (lastName) url += `last_name=${lastName}&`;
-        if (grade) url += `grade=${grade}&`;
+  async function searchStudents() {
+      let url = 'http://localhost:5000/students?';
+      if (firstName) url += `first_name=${firstName}&`;
+      if (lastName) url += `last_name=${lastName}&`;
+      if (grade) url += `grade=${grade}&`;
 
-        const response = await fetch(url.slice(0, -1));
-        students = students = await response.json();
-    }
+      const response = await fetch(url.slice(0, -1));
+      students = await response.json();
+  }
 </script>
 
 <Navbar />
@@ -50,10 +50,12 @@
         
             <div class="student-list">
                 {#each students as student (student.student_id)}
+                  <a href="./students/{student.student_id}">
                     <div class="student-card">
                         <h2>{student.first_name} {student.last_name}</h2>
                         <p>Grade: {student.grade}</p>
                     </div>
+                  </a>
                 {/each}
             </div>
         </div>
@@ -151,10 +153,15 @@ button:hover {
   background-color: #0056b3;
 }
 
+a {
+  text-decoration: none;
+}
+
+
 .student-list {
   width: 100%;
   overflow-y: auto;
-  padding-top: 20px;
+  padding-bottom: 20px;
   box-sizing: border-box;
   flex-grow: 1;
 }
@@ -162,11 +169,16 @@ button:hover {
 .student-card {
   background-color: white;
   border-radius: 8px;
-  padding: 20px;
-  margin-top: 20px;
+  padding: 12px;
+  margin-bottom: 12px;
   border: 1px solid #e0e0e0;
-  width: 100%;
+  width: 97%;
   box-sizing: border-box;
+}
+
+.student-card:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
 }
 
 h2 {

@@ -1,6 +1,9 @@
+<script>
+    import img from '$lib/assets/logo.png';
+</script>
 <div class="navbar">
     <div class="navbar-logo">
-        <img src="./logo.png" alt="Logo" width="32">
+        <img src="{img}" alt="Logo" />
         <ul class="navbar-links">
             <p class="logo">OpenClass</p>
             <li><a href="/" class="navbar-link">Home</a></li>
@@ -32,6 +35,7 @@
 
     .navbar-logo img {
         margin-right: 8px;
+        width: 30px;
     }
 
     .navbar-links {
@@ -43,17 +47,18 @@
     }
 
     .navbar-link {
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 500;
         padding-left: 32px;
         text-decoration: none;
         color: white;
     }
     .navbar-link:hover {
-        color: #5697f9;
+        color: #3787ff;
     }
 
     .logo{
-        color: #5697f9;
+        color: #3787ff;
         font-size: 18px;
         font-weight: 600;
         margin: 0;

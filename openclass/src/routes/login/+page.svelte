@@ -35,7 +35,7 @@
 
 <style>
     * {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .login {
@@ -65,17 +65,19 @@
     }
 
     button {
-        font-weight: 500;
-        color: #FFFFFF;
-        padding: 10px;
         width: 100%;
-        cursor: pointer;
-        background-color: #3c8afe;
-        border: 1px solid #cccccc;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
         border-radius: 8px;
-        box-sizing: border-box;
+        font-size: 17px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
-    button:hover{
-        background-color: #1d76fc;
+
+    button:hover {
+        background-color: #0056b3;
     }
+
 </style>

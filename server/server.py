@@ -44,7 +44,7 @@ def students():
 
 @app.route("/students/<int:id>")
 def student(id):
-    result = db.session.execute("SELECT * FROM student WHERE id = :id", {"id": id})
+    result = db.session.execute(text(f"SELECT * FROM student WHERE student_id = :id"), {"id": id})
     row = result.fetchone()
     
     if row is None:
