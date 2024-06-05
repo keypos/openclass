@@ -2,13 +2,27 @@
     import Navbar from "../../Navbar.svelte";
     import { onMount } from 'svelte'
     import { page } from '$app/stores'
+    import { goto } from '$app/navigation'
     const subject_id = $page.params.subject_id
 
     type Subject = {
       subject_id: number;
       subject_name: string;
-      // Add other subject properties here
+      teacher_id: number;
     };
+
+    type Teacher = {
+        teacher_id: number;
+        first_name: string;
+        last_name: string;
+    };
+
+    let teachers: Teacher[] = [];
+
+    async function fetchTeachers() {
+        const response = await fetch('http://localhost:5000/teachers');
+        teachers = await response.json();
+    }
 
     let subject: Subject;
 
@@ -32,7 +46,22 @@
         }
     }
 
-    onMount(subjectInfo)
+    async function deleteSubject() {
+        const response = await fetch(`http://localhost:5000/subjects/${subject_id}`, {
+            method: 'DELETE',
+        })
+        if (response.ok) {
+            alert('Student deleted successfully')
+            goto('/subjects')
+        } else {
+            alert('Failed to delete student')
+        }
+    }
+
+    onMount(async () => {
+        await fetchTeachers();
+        await subjectInfo();
+    });
 </script>
 
 <Navbar />
@@ -42,7 +71,14 @@
         {#if subject}
             <p>Subject Name</p>
             <input bind:value={subject.subject_name}/>
+            <p>Subject Coordinator</p>
+            <select class="teachers" bind:value={subject.teacher_id}>
+                {#each teachers as teacher (teacher.teacher_id)}
+                  <option value={teacher.teacher_id}>{teacher.first_name} {teacher.last_name}</option>
+                {/each}
+            </select>
             <button on:click={updateSubject}>Update</button>
+            <button class="delete" on:click={deleteSubject}>Delete</button>
         {:else}
             Loading...
         {/if}
@@ -104,5 +140,23 @@
 
     button:hover {
         background-color: #0056b3;
+    }
+
+    .teachers {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #fff;
+    }
+
+    .delete {
+        background-color: #dc3545;
+    }
+
+    .delete:hover {
+        background-color: #bd2130;
     }
 </style>

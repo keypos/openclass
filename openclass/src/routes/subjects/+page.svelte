@@ -64,6 +64,7 @@
     } else {
       alert('Failed to create subject');
     }
+    searchSubjects();
   }
 
    onMount(async () => {

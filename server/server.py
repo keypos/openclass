@@ -112,6 +112,12 @@ def delete_student(id):
     
     return jsonify({"message": "Student deleted"})
 
+@app.route("/subjects/<int:id>", methods=["DELETE"])
+def delete_subject(id):
+    db.session.execute(text(f"DELETE FROM subject WHERE subject_id = :id"), {"id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Subject deleted"})
 
 @app.route("/students", methods=["POST"])
 def create_student():
