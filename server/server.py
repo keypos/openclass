@@ -41,3 +41,22 @@ def students():
         students.append(student)
     
     return jsonify(students)
+
+@app.route("/students/<int:id>")
+def student(id):
+    result = db.session.execute("SELECT * FROM student WHERE id = :id", {"id": id})
+    row = result.fetchone()
+    
+    if row is None:
+        return jsonify({"error": "Student not found"}), 404
+    
+    student = {key: value for key, value in row._mapping.items()}
+    return jsonify(student)
+
+@app.route("/students", methods=["POST"])
+def create_student():
+    student = request.json
+    db.session.execute("INSERT INTO student (first_name, last_name, grade) VALUES (:first_name, :last_name, :grade)", student)
+    db.session.commit()
+    
+    return jsonify({"message": "Student created"})
