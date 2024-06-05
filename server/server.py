@@ -121,6 +121,14 @@ def create_student():
     
     return jsonify({"message": "Student created"})
 
+@app.route("/subjects", methods=["POST"])
+def create_subject():
+    subject = request.json
+    db.session.execute(text("INSERT INTO subject (subject_name, teacher_id) VALUES (:subject_name, :teacher_id)"), subject)
+    db.session.commit()
+    
+    return jsonify({"message": "Subject created"})
+
 @app.route("/students/<int:id>", methods=["PUT"])
 def update_student(id):
     student = request.json
@@ -136,3 +144,28 @@ def update_subject(id):
     db.session.commit()
     
     return jsonify({"message": "Subject updated"})
+
+@app.route("/teachers")
+def teachers():
+    first_name = request.args.get('first_name')
+    last_name = request.args.get('last_name')
+    
+    query = "SELECT * FROM teacher WHERE 1=1"
+    params = {}
+    
+    if first_name:
+        query += " AND first_name LIKE :first_name"
+        params['first_name'] = f"%{first_name}%"
+    
+    if last_name:
+        query += " AND last_name LIKE :last_name"
+        params['last_name'] = f"%{last_name}%"
+    
+    result = db.session.execute(text(query), params)
+    
+    teachers = []
+    for row in result:
+        teacher = {key: value for key, value in row._mapping.items()}
+        teachers.append(teacher)
+    
+    return jsonify(teachers)

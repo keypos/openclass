@@ -52,7 +52,7 @@
         width: 300px;
         padding: 20px;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 16px;
     }
 
     input {

@@ -19,7 +19,6 @@
     async function studentInfo() {
         const response = await fetch(`http://localhost:5000/students/${student_id}`)
         student = await response.json()
-        console.log(student)
     }
 
     async function updateStudent() {

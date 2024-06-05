@@ -1,11 +1,19 @@
 <script lang=ts>
   import Navbar from "../Navbar.svelte";
+  import { onMount } from 'svelte';
 
   let create_subjectName = '';
   let create_coordinator = '';
 
   let subjectName = '';
   let coordinater = '';
+
+  function changeColor() {
+    const selectElement = document.querySelector('.teachers') as HTMLElement;
+    if (selectElement) {
+      selectElement.style.color = '#333';
+    }
+  }
 
   type Subject = {
       subject_id: number;
@@ -15,21 +23,53 @@
 
   let subjects: Subject[] = [];
 
-  async function createSubject() {
-      let url = 'http://localhost:5000/subjects?';
-  }
-
   async function searchSubjects() {
-      let url = 'http://localhost:5000/subjects?';
-      if (subjectName) url += `subject_name=${subjectName}&`;
-      if (coordinater) url += `coordinator=${coordinater}&`;
+    let url = 'http://localhost:5000/subjects?';
+    if (subjectName) url += `subject_name=${subjectName}&`;
+    if (coordinater) url += `coordinator=${coordinater}&`;
 
-      const response = await fetch(url.slice(0, -1));
-      subjects = await response.json();
-      console.log(subjects);
+    const response = await fetch(url.slice(0, -1));
+    subjects = await response.json();
   }
 
-  searchSubjects();
+  type Teacher = {
+    teacher_id: number;
+    first_name: string;
+    last_name: string;
+  };
+
+  let teachers: Teacher[] = [];
+
+  async function fetchTeachers() {
+    const response = await fetch('http://localhost:5000/teachers');
+    teachers = await response.json();
+  }
+
+  async function createSubject() {
+    const response = await fetch('http://localhost:5000/subjects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        subject_name: create_subjectName,
+        teacher_id: create_coordinator,
+      }),
+    });
+
+    if (response.ok) {
+      alert('Subject created successfully');
+      create_subjectName = '';
+      create_coordinator = '';
+    } else {
+      alert('Failed to create subject');
+    }
+  }
+
+   onMount(async () => {
+    await fetchTeachers();
+    await searchSubjects();
+  });
 </script>
 
 <Navbar />
@@ -56,7 +96,12 @@
         <div class="create-box">
           <h2>Create a New Subject</h2>
           <input bind:value={create_subjectName} placeholder="Subject Name" />
-          <input bind:value={create_coordinator} placeholder="Subject Coordinator" />
+          <select class="teachers" bind:value={create_coordinator} on:change={changeColor}>
+          <option value="" disabled hidden selected>Select teacher</option>
+            {#each teachers as teacher (teacher.teacher_id)}
+              <option value={teacher.teacher_id}>{teacher.first_name} {teacher.last_name}</option>
+            {/each}
+          </select>
           <button on:click={createSubject}>Create Subject</button>
         </div>
     </div>
@@ -115,7 +160,7 @@
   input, button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     box-sizing: border-box;
     border-radius: 8px;
     font-size: 16px;
@@ -189,5 +234,20 @@
     margin: 0;
     color: #666;
     font-size: 16px;
+  }
+
+  .teachers {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #777;
+    background-color: #fff;
+  }
+
+  .teachers option {
+    color: #333;
   }
 </style>

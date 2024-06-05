@@ -15,7 +15,6 @@
     async function subjectInfo() {
         const response = await fetch(`http://localhost:5000/subjects/${subject_id}`)
         subject = await response.json()
-        console.log(subject)
     }
 
     async function updateSubject() {

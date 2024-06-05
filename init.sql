@@ -1,12 +1,12 @@
 CREATE TABLE address (
-    address_id INT PRIMARY KEY,
+    address_id INTEGER PRIMARY KEY AUTOINCREMENT,
     street VARCHAR(64) NOT NULL,
     postcode VARCHAR(64) NOT NULL,
     state VARCHAR(3) NOT NULL
 );
 
 CREATE TABLE guardian (
-    guardian_id INT PRIMARY KEY,
+    guardian_id INTEGER PRIMARY KEY AUTOINCREMENT,
     address_id INT,
     first_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE guardian (
 );
 
 CREATE TABLE teacher (
-    teacher_id INT PRIMARY KEY,
+    teacher_id INTEGER PRIMARY KEY AUTOINCREMENT,
     address_id INT,
     first_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE teacher (
 );
 
 CREATE TABLE student (
-    student_id INT PRIMARY KEY,
+    student_id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
     grade INT,
@@ -38,14 +38,14 @@ CREATE TABLE student (
 );
 
 CREATE TABLE timetable (
-    timetable_id INT PRIMARY KEY,
+    timetable_id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INT,
     timetable_date DATE NOT NULL,
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 
 CREATE TABLE relationship (
-    relationship_id INT PRIMARY KEY,
+    relationship_id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INT,
     guardian_id INT,
     relationship_type VARCHAR(32) NOT NULL,
@@ -54,14 +54,14 @@ CREATE TABLE relationship (
 );
 
 CREATE TABLE subject (
-    subject_id INT PRIMARY KEY,
+    subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
     teacher_id INT,
     subject_name VARCHAR(64) NOT NULL,
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 
 CREATE TABLE assessment (
-    assessment_id INT PRIMARY KEY,
+    assessment_id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INT,
     assessment_name VARCHAR(64) NOT NULL,
     max_mark INT NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE assessment (
 );
 
 CREATE TABLE class (
-    class_id INT PRIMARY KEY,
+    class_id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INT,
     teacher_id INT,
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
@@ -78,7 +78,7 @@ CREATE TABLE class (
 );
 
 CREATE TABLE behaviour (
-    behaviour_id VARCHAR(64) PRIMARY KEY,
+    behaviour_id INTEGER PRIMARY KEY AUTOINCREMENT,
     class_id INT,
     comment TEXT NOT NULL,
     comment_date DATE NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE behaviour (
 );
 
 CREATE TABLE period (
-    period_id INT PRIMARY KEY,
+    period_id INTEGER PRIMARY KEY AUTOINCREMENT,
     timetable_id INT,
     class_id INT,
     period_number INT NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE period (
 );
 
 CREATE TABLE student_subjects (
-    student_subjects_id INT PRIMARY KEY,
+    student_subjects_id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INT,
     student_id INT,
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
@@ -104,7 +104,7 @@ CREATE TABLE student_subjects (
 );
 
 CREATE TABLE mark (
-    mark_id INT PRIMARY KEY,
+    mark_id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INT,
     assessment_id INT,
     mark INT NOT NULL,
