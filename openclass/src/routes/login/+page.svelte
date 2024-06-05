@@ -51,16 +51,16 @@
         align-items: center;
         width: 300px;
         padding: 20px;
-        border: 1px solid #cccccc;
+        border: 1px solid #ddd;
         border-radius: 8px;
     }
 
     input {
-        margin-bottom: 10px;
+        margin-bottom: 16px;
         padding: 10px;
         width: 100%;
         box-sizing: border-box;
-        border: 1px solid #cccccc;
+        border: 1px solid #ddd;
         border-radius: 8px;
     }
 

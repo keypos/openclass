@@ -8,6 +8,7 @@
             <p class="logo">OpenClass</p>
             <li><a href="/" class="navbar-link">Home</a></li>
             <li><a href="/students" class="navbar-link">Students</a></li>
+            <li><a href="/subjects" class="navbar-link">Subjects</a></li>
             <li><a href="/assessments" class="navbar-link">Assessments</a></li>
             <li><a href="/profile" class="navbar-link">Profile</a></li>
         </ul>
@@ -53,6 +54,7 @@
         text-decoration: none;
         color: white;
     }
+
     .navbar-link:hover {
         color: #3787ff;
     }

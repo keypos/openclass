@@ -1,6 +1,7 @@
 <script lang=ts>
     import Navbar from "../../Navbar.svelte";
     import { onMount } from 'svelte'
+    import { goto } from '$app/navigation'
     import { page } from '$app/stores'
     const student_id = $page.params.student_id
 
@@ -21,6 +22,33 @@
         console.log(student)
     }
 
+    async function updateStudent() {
+        const response = await fetch(`http://localhost:5000/students/${student_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(student)
+        })
+        if (response.ok) {
+            alert('Student updated successfully')
+        } else {
+            alert('Failed to update student')
+        }
+    }
+
+    async function deleteStudent() {
+        const response = await fetch(`http://localhost:5000/students/${student_id}`, {
+            method: 'DELETE',
+        })
+        if (response.ok) {
+            alert('Student deleted successfully')
+            goto('/students')
+        } else {
+            alert('Failed to delete student')
+        }
+    }
+
     onMount(studentInfo)
 </script>
 
@@ -39,7 +67,8 @@
             <input bind:value={student.phone}/>
             <p>Grade</p>
             <input bind:value={student.grade}/>
-            <button>Update</button>
+            <button on:click={updateStudent}>Update</button>
+            <button class="delete" on:click={deleteStudent}>Delete</button>
         {:else}
             Loading...
         {/if}
@@ -56,7 +85,7 @@
     }
 
     .details {
-        border: solid 1px #ccc;
+        border: solid 1px #ddd;
         border-radius: 16px;
         padding: 30px;
         width: 300px;
@@ -80,7 +109,7 @@
         width: 100%;
         padding: 10px;
         margin-bottom: 4px;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         border-radius: 8px;
         box-sizing: border-box;
         font-size: 16px;
@@ -101,5 +130,13 @@
 
     button:hover {
         background-color: #0056b3;
+    }
+
+    .delete {
+        background-color: #dc3545;
+    }
+
+    .delete:hover {
+        background-color: #bd2130;
     }
 </style>

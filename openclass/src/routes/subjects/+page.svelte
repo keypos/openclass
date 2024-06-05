@@ -1,40 +1,35 @@
 <script lang=ts>
   import Navbar from "../Navbar.svelte";
 
-  let create_firstName = '';
-  let create_lastName = '';
-  let create_grade = '';
-  let create_email = '';
-  let create_phone = '';
+  let create_subjectName = '';
+  let create_coordinator = '';
 
-  let firstName = '';
-  let lastName = '';
-  let grade = '';
+  let subjectName = '';
+  let coordinater = '';
 
-  type Student = {
-      student_id: number;
-      first_name: string;
-      last_name: string;
-      grade: number;
+  type Subject = {
+      subject_id: number;
+      subject_name: string;
+      coordinator: string;
   };
 
-  let students: Student[] = [];
+  let subjects: Subject[] = [];
 
-  async function createStudent() {
-      let url = 'http://localhost:5000/students?';
+  async function createSubject() {
+      let url = 'http://localhost:5000/subjects?';
   }
 
-  async function searchStudents() {
-      let url = 'http://localhost:5000/students?';
-      if (firstName) url += `first_name=${firstName}&`;
-      if (lastName) url += `last_name=${lastName}&`;
-      if (grade) url += `grade=${grade}&`;
+  async function searchSubjects() {
+      let url = 'http://localhost:5000/subjects?';
+      if (subjectName) url += `subject_name=${subjectName}&`;
+      if (coordinater) url += `coordinator=${coordinater}&`;
 
       const response = await fetch(url.slice(0, -1));
-      students = await response.json();
+      subjects = await response.json();
+      console.log(subjects);
   }
 
-  searchStudents();
+  searchSubjects();
 </script>
 
 <Navbar />
@@ -42,31 +37,27 @@
     <div class="container">
         <div class="students">
             <div class="search-box">
-                <h2>Search for Students</h2>
-                <input bind:value={firstName} placeholder="First Name" on:input={searchStudents} />
-                <input bind:value={lastName} placeholder="Last Name" on:input={searchStudents} />
-                <input bind:value={grade} type="number" min=1 max=12 placeholder="Grade" on:input={searchStudents} />
+                <h2>Search for Subjects</h2>
+                <input bind:value={subjectName} placeholder="Subject Name" on:input={searchSubjects} />
+                <input bind:value={coordinater} placeholder="Coordinator" on:input={searchSubjects} />
             </div>
         
             <div class="student-list">
-                {#each students as student (student.student_id)}
-                  <a href="./students/{student.student_id}">
+                {#each subjects as subject (subject.subject_id)}
+                  <a href="./subjects/{subject.subject_id}">
                     <div class="student-card">
-                        <h3>{student.first_name} {student.last_name}</h3>
-                        <p>Grade: {student.grade}</p>
+                        <h3>{subject.subject_name}</h3>
+                        <p>{subject.coordinator}</p>
                     </div>
                   </a>
                 {/each}
             </div>
         </div>
         <div class="create-box">
-          <h2>Create a New Student</h2>
-          <input bind:value={create_firstName} placeholder="First Name" />
-          <input bind:value={create_lastName} placeholder="Last Name" />
-          <input bind:value={create_grade} type="number" min=1 max=12 placeholder="Grade" />
-          <input bind:value={create_email} type="email" placeholder="Email" />
-          <input bind:value={create_phone} type="tel" placeholder="Phone number" />
-          <button on:click={createStudent}>Create Student</button>
+          <h2>Create a New Subject</h2>
+          <input bind:value={create_subjectName} placeholder="Subject Name" />
+          <input bind:value={create_coordinator} placeholder="Subject Coordinator" />
+          <button on:click={createSubject}>Create Subject</button>
         </div>
     </div>
 </div>

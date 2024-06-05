@@ -42,6 +42,42 @@ def students():
     
     return jsonify(students)
 
+@app.route("/subjects")
+def subjects():
+    subject_name = request.args.get('subject_name')
+    coordinator = request.args.get('coordinator')
+    
+    query = "SELECT * FROM subject WHERE 1=1"
+    params = {}
+    
+    if subject_name:
+        query += " AND subject_name LIKE :subject_name"
+        params['subject_name'] = f"%{subject_name}%"
+    
+    if coordinator:
+        teacher = db.session.execute(text(f"SELECT teacher_id FROM teacher WHERE first_name LIKE :coordinator"), {"coordinator": f"%{coordinator}%"}).fetchone()
+        if teacher:
+            teacher_id = teacher[0]
+        else:
+            teacher_id = None
+
+        query += " AND teacher_id = :teacher_id"
+        params['teacher_id'] = teacher_id
+    
+    result = db.session.execute(text(query), params)
+    
+    subjects = []
+    for row in result:
+        subject = {key: value for key, value in row._mapping.items()}
+
+        teacher = db.session.execute(text(f"SELECT first_name, last_name FROM teacher WHERE teacher_id = :teacher_id"), {"teacher_id": subject['teacher_id']}).fetchone()
+        subject['coordinator'] = f"{teacher[0]} {teacher[1]}"
+
+        subjects.append(subject)
+    
+    return jsonify(subjects)
+
+
 @app.route("/students/<int:id>")
 def student(id):
     result = db.session.execute(text(f"SELECT * FROM student WHERE student_id = :id"), {"id": id})
@@ -53,10 +89,50 @@ def student(id):
     student = {key: value for key, value in row._mapping.items()}
     return jsonify(student)
 
+@app.route("/subjects/<int:id>")
+def subject(id):
+    result = db.session.execute(text(f"SELECT * FROM subject WHERE subject_id = :id"), {"id": id})
+    row = result.fetchone()
+    
+    if row is None:
+        return jsonify({"error": "Subject not found"}), 404
+    
+    subject = {key: value for key, value in row._mapping.items()}
+    
+    teacher = db.session.execute(text(f"SELECT first_name, last_name FROM teacher WHERE teacher_id = :teacher_id"), {"teacher_id": subject['teacher_id']}).fetchone()
+    subject['coordinator'] = f"{teacher[0]} {teacher[1]}"
+    
+    return jsonify(subject)
+
+
+@app.route("/students/<int:id>", methods=["DELETE"])
+def delete_student(id):
+    db.session.execute(text(f"DELETE FROM student WHERE student_id = :id"), {"id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Student deleted"})
+
+
 @app.route("/students", methods=["POST"])
 def create_student():
     student = request.json
-    db.session.execute("INSERT INTO student (first_name, last_name, grade) VALUES (:first_name, :last_name, :grade)", student)
+    db.session.execute(text("INSERT INTO student (first_name, last_name, grade) VALUES (:first_name, :last_name, :grade)"), student)
     db.session.commit()
     
     return jsonify({"message": "Student created"})
+
+@app.route("/students/<int:id>", methods=["PUT"])
+def update_student(id):
+    student = request.json
+    db.session.execute(text("UPDATE student SET first_name = :first_name, last_name = :last_name, grade = :grade WHERE student_id = :id"), {**student, "id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Student updated"})
+
+@app.route("/subjects/<int:id>", methods=["PUT"])
+def update_subject(id):
+    subject = request.json
+    db.session.execute(text("UPDATE subject SET subject_name = :subject_name, teacher_id = :teacher_id WHERE subject_id = :id"), {**subject, "id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Subject updated"})
