@@ -16,6 +16,29 @@
 
     let student: Student;
 
+    type Subject = {
+        subject_id: number;
+        subject_name: string;
+        coordinator: string;
+    };
+
+    let subjects: Subject[] = [];
+
+    let behaviourId: number;
+
+    function changeColor() {
+        const selectElement = document.querySelector('.teachers') as HTMLElement;
+        if (selectElement) {
+          selectElement.style.color = '#333';
+        }
+    }
+
+    async function fetchSubjects() {
+        const response = await fetch('http://localhost:5000/subjects');
+        subjects = await response.json();
+        console.log(subjects);
+    }
+
     async function studentInfo() {
         const response = await fetch(`http://localhost:5000/students/${student_id}`)
         student = await response.json()
@@ -48,13 +71,36 @@
         }
     }
 
-    onMount(studentInfo)
+    async function addBehaviourComment() {
+        const response = await fetch(`http://localhost:5000/comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: student_id,
+                subject_id: behaviourId,
+                comment: 'test'
+            })
+        })
+        if (response.ok) {
+            alert('Behaviour comment added successfully')
+        } else {
+            alert('Failed to add behaviour comment')
+        }
+    }
+
+    onMount(async () => {
+        await fetchSubjects();
+        await studentInfo();
+    });
+
 </script>
 
 <Navbar />
 <div class="container">
     <div class="details">
-        <h2>Edit Student Details</h2>
+        <h2>Student Details</h2>
         {#if student}
             <p>First Name</p>
             <input bind:value={student.first_name}/>
@@ -66,11 +112,22 @@
             <input bind:value={student.phone}/>
             <p>Grade</p>
             <input bind:value={student.grade}/>
-            <button on:click={updateStudent}>Update</button>
-            <button class="delete" on:click={deleteStudent}>Delete</button>
+            <button on:click={updateStudent}>Update Information</button>
+            <button class="delete" on:click={deleteStudent}>Delete Student</button>
         {:else}
             Loading...
         {/if}
+    </div>
+    <div class=details>
+        <h2>Behaviour Comments</h2>
+        <select id="searchSubject" class="teachers" bind:value={behaviourId} on:change={changeColor}>
+            <option value="" disabled hidden selected>Select subject</option>
+            {#each subjects as subject (subject.subject_id)}
+                <option value={subject.subject_id}>{subject.subject_name}</option>
+            {/each}
+        </select>
+        <textarea placeholder="Behaviour comment"></textarea>
+        <button on:click={addBehaviourComment}>Add Comment</button>
     </div>
 </div>
 
@@ -88,6 +145,7 @@
         border-radius: 16px;
         padding: 30px;
         width: 300px;
+        margin: 30px;
     }
 
     h2 {
@@ -137,5 +195,32 @@
 
     .delete:hover {
         background-color: #bd2130;
+    }
+
+    .teachers {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #777;
+        background-color: #fff;
+    }
+
+    .teachers option {
+        color: #333;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 4px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 16px;
+        height: 128px;
+        resize:none;
     }
 </style>

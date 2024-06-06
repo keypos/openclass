@@ -2,21 +2,53 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///openclass.db'
 db = SQLAlchemy(app)
 
+
 @app.route("/")
 def hello_world():
     return "<p>Server is running</p>"
+
+@app.route('/classes', methods=['GET'])
+def get_teacher_periods():
+    date_str = request.args.get('date')
+    teacher_id = request.args.get('teacher_id')
+    
+    if not date_str or not teacher_id:
+        return jsonify({'error': 'Please provide both date and teacher_id'}), 400
+    
+    try:
+        date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD.'}), 400
+    
+    query = text('''
+    SELECT p.period_id, p.room, s.subject_name
+    FROM period p
+    JOIN timetable t ON p.timetable_id = t.timetable_id
+    JOIN subject s ON p.subject_id = s.subject_id
+    WHERE t.teacher_id = :teacher_id AND t.timetable_date = :timetable_date
+    ''')
+    
+    result = db.session.execute(query, {'teacher_id': teacher_id, 'timetable_date': date}).fetchall()
+    
+    periods = [{'period_id': row[0], 'room': row[1], 'subject_name': row[2]} for row in result]
+    
+    return jsonify(periods)
+
 
 @app.route("/students")
 def students():
     first_name = request.args.get('first_name')
     last_name = request.args.get('last_name')
     grade = request.args.get('grade')
+    print(request.args.get("date"))
+    print(request.args.get('first_name'))
     
     query = "SELECT * FROM student WHERE 1=1"
     params = {}

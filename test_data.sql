@@ -84,14 +84,28 @@ INSERT INTO relationship (relationship_id, student_id, guardian_id, relationship
 
 -- Insert subjects
 INSERT INTO subject (subject_id, teacher_id, subject_name) VALUES
-(1, 1, 'Mathematics'),
-(2, 2, 'English'),
-(3, 3, 'Science'),
-(4, 4, 'History'),
-(5, 5, 'Geography'),
-(6, 6, 'Physical Education'),
-(7, 7, 'Art'),
-(8, 8, 'Music');
+(1, 1, 'Mathematics Extension 2'),
+(2, 1, 'Mathematics Extension 1'),
+(3, 1, 'Mathematics Advanced'),
+(4, 1, 'Mathematics Standard'),
+(5, 2, 'Visual Arts'),
+(6, 2, 'Music'),
+(7, 3, 'English Advanced'),
+(8, 3, 'English Standard'),
+(9, 4, 'Studies of Religion 2'),
+(10, 4, 'Studies of Religion 1'),
+(11, 4, 'Studies in Catholic Thought'),
+(12, 5, 'Software Design and Development'),
+(13, 5, 'Information Processes and Technology'),
+(14, 6, 'Physics'),
+(15, 6, 'Chemistry'),
+(16, 6, 'Biology'),
+(17, 7, 'Modern History'),
+(18, 7, 'Ancient History'),
+(19, 7, 'Geography'),
+(20, 8, 'Business'),
+(21, 8, 'Commerce'),
+(22, 8, 'Law');
 
 -- Insert assessments
 INSERT INTO assessment (assessment_id, subject_id, assessment_name, max_mark, date_due) VALUES
@@ -104,38 +118,16 @@ INSERT INTO assessment (assessment_id, subject_id, assessment_name, max_mark, da
 (7, 7, 'Painting', 50, '2024-07-30'),
 (8, 8, 'Music Performance', 100, '2024-08-01');
 
--- Insert classes
-INSERT INTO class (class_id, subject_id, teacher_id) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 4, 4),
-(5, 5, 5),
-(6, 6, 6),
-(7, 7, 7),
-(8, 8, 8);
-
 -- Insert behaviours
-INSERT INTO behaviour (behaviour_id, class_id, comment, comment_date) VALUES
+INSERT INTO behaviour (behaviour_id, subject_id, comment, comment_date) VALUES
 ('1', 1, 'Excellent participation', '2024-05-01'),
 ('2', 2, 'Needs improvement in writing skills', '2024-05-02'),
 ('3', 3, 'Great understanding of concepts', '2024-05-03'),
 ('4', 4, 'Good effort in project', '2024-05-04'),
-('5', 5, 'Active class participation', '2024-05-05'),
+('5', 5, 'Active subject participation', '2024-05-05'),
 ('6', 6, 'Outstanding performance', '2024-05-06'),
 ('7', 7, 'Creative artwork', '2024-05-07'),
 ('8', 8, 'Excellent musical skills', '2024-05-08');
-
--- Insert periods
-INSERT INTO period (period_id, timetable_id, class_id, period_number, room) VALUES
-(1, 1, 1, 1, 'Room 101'),
-(2, 2, 2, 2, 'Room 102'),
-(3, 3, 3, 3, 'Room 103'),
-(4, 4, 4, 4, 'Room 104'),
-(5, 5, 5, 5, 'Room 105'),
-(6, 6, 6, 6, 'Room 106'),
-(7, 7, 7, 7, 'Room 107'),
-(8, 8, 8, 8, 'Room 108');
 
 INSERT INTO student_subjects (student_subjects_id, subject_id, student_id) VALUES
 (1, 1, 1),

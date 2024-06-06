@@ -69,30 +69,21 @@ CREATE TABLE assessment (
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
 );
 
-CREATE TABLE class (
-    class_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    subject_id INT,
-    teacher_id INT,
-    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
-    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
-);
-
 CREATE TABLE behaviour (
     behaviour_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    class_id INT,
+    subject_id INT,
     comment TEXT NOT NULL,
     comment_date DATE NOT NULL,
-    FOREIGN KEY (class_id) REFERENCES class(class_id)
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
 );
 
 CREATE TABLE period (
     period_id INTEGER PRIMARY KEY AUTOINCREMENT,
     timetable_id INT,
-    class_id INT,
-    period_number INT NOT NULL,
+    subject_id INT,
     room VARCHAR(64),
     FOREIGN KEY (timetable_id) REFERENCES timetable(timetable_id),
-    FOREIGN KEY (class_id) REFERENCES class(class_id)
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
 );
 
 CREATE TABLE student_subjects (
