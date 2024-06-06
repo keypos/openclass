@@ -98,7 +98,7 @@
           <h2>Create a New Subject</h2>
           <input bind:value={create_subjectName} placeholder="Subject Name" />
           <select class="teachers" bind:value={create_coordinator} on:change={changeColor}>
-          <option value="" disabled hidden selected>Select teacher</option>
+          <option value="" disabled hidden selected>Select coordinator</option>
             {#each teachers as teacher (teacher.teacher_id)}
               <option value={teacher.teacher_id}>{teacher.first_name} {teacher.last_name}</option>
             {/each}

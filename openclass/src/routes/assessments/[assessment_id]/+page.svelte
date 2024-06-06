@@ -1,89 +1,91 @@
-<script lang=ts>
+<script lang="ts">
     import Navbar from "../../Navbar.svelte";
-    import { onMount } from 'svelte'
-    import { page } from '$app/stores'
-    import { goto } from '$app/navigation'
-    const subject_id = $page.params.subject_id
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { goto } from '$app/navigation';
+
+    const assessment_id = $page.params.assessment_id;
+
+    type Assessment = {
+      assessment_id: number;
+      assessment_name: string;
+      subject_id: number;
+    };
 
     type Subject = {
-      subject_id: number;
-      subject_name: string;
-      teacher_id: number;
+        subject_id: number;
+        subject_name: string;
     };
 
-    type Teacher = {
-        teacher_id: number;
-        first_name: string;
-        last_name: string;
-    };
+    let subjects: Subject[] = [];
 
-    let teachers: Teacher[] = [];
-
-    async function fetchTeachers() {
-        const response = await fetch('http://localhost:5000/teachers');
-        teachers = await response.json();
+    async function fetchSubjects() {
+        const response = await fetch('http://localhost:5000/subjects');
+        subjects = await response.json();
     }
 
-    let subject: Subject;
+    let assessment: Assessment;
 
-    async function subjectInfo() {
-        const response = await fetch(`http://localhost:5000/subjects/${subject_id}`)
-        subject = await response.json()
+    async function assessmentInfo() {
+        const response = await fetch(`http://localhost:5000/assessments/${assessment_id}`);
+        assessment = await response.json();
     }
 
-    async function updateSubject() {
-        const response = await fetch(`http://localhost:5000/subjects/${subject_id}`, {
+    async function updateAssessment() {
+        const response = await fetch(`http://localhost:5000/assessments/${assessment_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(subject)
-        })
+            body: JSON.stringify(assessment)
+        });
         if (response.ok) {
-            alert('Subject updated successfully')
+            alert('Assessment updated successfully');
+            goto('/assessments');
         } else {
-            alert('Failed to update subject')
+            alert('Failed to update assessment');
         }
     }
 
-    async function deleteSubject() {
-        const response = await fetch(`http://localhost:5000/subjects/${subject_id}`, {
+    async function deleteAssessment() {
+        const response = await fetch(`http://localhost:5000/assessments/${assessment_id}`, {
             method: 'DELETE',
-        })
+        });
         if (response.ok) {
-            alert('Subject deleted successfully')
-            goto('/subjects')
+            alert('Assessment deleted successfully');
+            goto('/assessments');
         } else {
-            alert('Failed to delete subject')
+            alert('Failed to delete assessment');
         }
     }
 
     onMount(async () => {
-        await fetchTeachers();
-        await subjectInfo();
+        await fetchSubjects();
+        await assessmentInfo();
     });
 </script>
 
 <Navbar />
 <div class="container">
     <div class="details">
-        <h2>Edit Subject Details</h2>
-        {#if subject}
-            <p>Subject Name</p>
-            <input bind:value={subject.subject_name}/>
-            <p>Subject Coordinator</p>
-            <select class="teachers" bind:value={subject.teacher_id}>
-                {#each teachers as teacher (teacher.teacher_id)}
-                  <option value={teacher.teacher_id}>{teacher.first_name} {teacher.last_name}</option>
+        <h2>Edit Assessment Details</h2>
+        {#if assessment}
+            <p>Assessment Name</p>
+            <input bind:value={assessment.assessment_name} />
+            <p>Subject</p>
+            <select class="teachers" bind:value={assessment.subject_id}>
+                {#each subjects as subject (subject.subject_id)}
+                  <option value={subject.subject_id}>{subject.subject_name}</option>
                 {/each}
             </select>
-            <button on:click={updateSubject}>Update</button>
-            <button class="delete" on:click={deleteSubject}>Delete</button>
+            <button on:click={updateAssessment}>Update</button>
+            <button class="delete" on:click={deleteAssessment}>Delete</button>
         {:else}
             Loading...
         {/if}
     </div>
 </div>
+
 
 <style>
     .container {

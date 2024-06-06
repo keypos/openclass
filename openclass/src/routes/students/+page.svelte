@@ -6,6 +6,7 @@
   let create_grade = '';
   let create_email = '';
   let create_phone = '';
+  let create_dob = '';
 
   let firstName = '';
   let lastName = '';
@@ -21,7 +22,33 @@
   let students: Student[] = [];
 
   async function createStudent() {
-      let url = 'http://localhost:5000/students?';
+      const response = await fetch('http://localhost:5000/students', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              first_name: create_firstName,
+              last_name: create_lastName,
+              grade: create_grade,
+              email: create_email,
+              phone: create_phone,
+              dob: create_dob
+          })
+      });
+
+      if (response.ok) {
+          alert('Student created successfully');
+          create_firstName = '';
+          create_lastName = '';
+          create_grade = '';
+          create_email = '';
+          create_phone = '';
+          create_dob = '';
+          searchStudents();
+      } else {
+          alert('Failed to create student');
+      }
   }
 
   async function searchStudents() {
@@ -63,6 +90,7 @@
           <h2>Create a New Student</h2>
           <input bind:value={create_firstName} placeholder="First Name" />
           <input bind:value={create_lastName} placeholder="Last Name" />
+          <input bind:value={create_dob} type="date" placeholder="Date of Birth" />
           <input bind:value={create_grade} type="number" min=1 max=12 placeholder="Grade" />
           <input bind:value={create_email} type="email" placeholder="Email" />
           <input bind:value={create_phone} type="tel" placeholder="Phone number" />
@@ -199,4 +227,11 @@
     color: #666;
     font-size: 16px;
   }
+
+  input[type="date"]:before {
+    color: #666;
+    content: attr(placeholder) !important;
+    margin-right: 0.5em;
+  }
+
 </style>

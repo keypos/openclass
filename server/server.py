@@ -77,6 +77,26 @@ def subjects():
     
     return jsonify(subjects)
 
+@app.route("/assessments")
+def assessments():
+    subject_id = request.args.get('subject_id')
+    
+    query = "SELECT * FROM assessment WHERE 1=1"
+    params = {}
+    
+    if subject_id:
+        query += " AND subject_id = :subject_id"
+        params['subject_id'] = subject_id
+    
+    result = db.session.execute(text(query), params)
+    
+    assessments = []
+    for row in result:
+        assessment = {key: value for key, value in row._mapping.items()}
+        assessments.append(assessment)
+    
+    return jsonify(assessments)
+
 
 @app.route("/students/<int:id>")
 def student(id):
@@ -104,6 +124,17 @@ def subject(id):
     
     return jsonify(subject)
 
+@app.route("/assessments/<int:id>")
+def assessment(id):
+    result = db.session.execute(text(f"SELECT * FROM assessment WHERE assessment_id = :id"), {"id": id})
+    row = result.fetchone()
+    
+    if row is None:
+        return jsonify({"error": "Assessment not found"}), 404
+    
+    assessment = {key: value for key, value in row._mapping.items()}
+    return jsonify(assessment)
+
 
 @app.route("/students/<int:id>", methods=["DELETE"])
 def delete_student(id):
@@ -119,10 +150,17 @@ def delete_subject(id):
     
     return jsonify({"message": "Subject deleted"})
 
+@app.route("/assessments/<int:id>", methods=["DELETE"])
+def delete_assessment(id):
+    db.session.execute(text(f"DELETE FROM assessment WHERE assessment_id = :id"), {"id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Assessment deleted"})
+
 @app.route("/students", methods=["POST"])
 def create_student():
     student = request.json
-    db.session.execute(text("INSERT INTO student (first_name, last_name, grade) VALUES (:first_name, :last_name, :grade)"), student)
+    db.session.execute(text("INSERT INTO student (first_name, last_name, grade, email, phone, dob) VALUES (:first_name, :last_name, :grade, :email, :phone, :dob)"), student)
     db.session.commit()
     
     return jsonify({"message": "Student created"})
@@ -134,6 +172,14 @@ def create_subject():
     db.session.commit()
     
     return jsonify({"message": "Subject created"})
+
+@app.route("/assessments", methods=["POST"])
+def create_assessment():
+    assessment = request.json
+    db.session.execute(text("INSERT INTO assessment (assessment_name, max_mark, date_due, subject_id) VALUES (:assessment_name, :max_mark, :date_due, :subject_id)"), assessment)
+    db.session.commit()
+    
+    return jsonify({"message": "Assessment created"})
 
 @app.route("/students/<int:id>", methods=["PUT"])
 def update_student(id):
@@ -150,6 +196,14 @@ def update_subject(id):
     db.session.commit()
     
     return jsonify({"message": "Subject updated"})
+
+@app.route("/assessments/<int:id>", methods=["PUT"])
+def update_assessment(id):
+    assessment = request.json
+    db.session.execute(text("UPDATE assessment SET assessment_name = :assessment_name, subject_id = :subject_id WHERE assessment_id = :id"), {**assessment, "id": id})
+    db.session.commit()
+    
+    return jsonify({"message": "Assessment updated"})
 
 @app.route("/teachers")
 def teachers():
