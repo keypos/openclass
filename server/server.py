@@ -55,7 +55,7 @@ def subjects():
         params['subject_name'] = f"%{subject_name}%"
     
     if coordinator:
-        teacher = db.session.execute(text(f"SELECT teacher_id FROM teacher WHERE first_name LIKE :coordinator"), {"coordinator": f"%{coordinator}%"}).fetchone()
+        teacher = db.session.execute(text(f"SELECT teacher_id FROM teacher WHERE first_name LIKE :coordinator OR last_name LIKE :coordinator"), {"coordinator": f"%{coordinator}%"}).fetchone()
         if teacher:
             teacher_id = teacher[0]
         else:
