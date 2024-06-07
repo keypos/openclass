@@ -1,10 +1,10 @@
 -- Ensure each teacher has a timetable entry for each day
 WITH RECURSIVE DateRange AS (
-    SELECT DATE('2024-05-07') AS date
+    SELECT DATE('2023-05-07') AS date
     UNION ALL
     SELECT DATE(date, '+1 day')
     FROM DateRange
-    WHERE date <= DATE('2024-07-06')
+    WHERE date <= DATE('2025-07-06')
 )
 INSERT INTO timetable (teacher_id, timetable_date)
 SELECT t.teacher_id, dr.date

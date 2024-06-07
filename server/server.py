@@ -37,7 +37,7 @@ def get_teacher_periods():
     
     result = db.session.execute(query, {'teacher_id': teacher_id, 'timetable_date': date}).fetchall()
     
-    periods = [{'period_id': row[0], 'room': row[1], 'subject_name': row[2]} for row in result]
+    periods = [{'room': row[1], 'subject_name': row[2]} for row in result]
     
     return jsonify(periods)
 
