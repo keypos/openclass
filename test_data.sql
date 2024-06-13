@@ -1,4 +1,3 @@
--- Insert addresses
 INSERT INTO address (address_id, street, postcode, state) VALUES
 (1, '123 Main St', '2000', 'NSW'),
 (2, '456 High St', '3000', 'VIC'),
@@ -11,7 +10,6 @@ INSERT INTO address (address_id, street, postcode, state) VALUES
 (9, '606 Forest Dr', '2010', 'NSW'),
 (10, '707 Sunset Blvd', '3010', 'VIC');
 
--- Insert guardians
 INSERT INTO guardian (guardian_id, address_id, first_name, last_name, dob, email, phone) VALUES
 (1, 1, 'John', 'Smith', '1980-01-01', 'john.smith@example.com', '0412345678'),
 (2, 2, 'Mary', 'Johnson', '1975-05-15', 'mary.johnson@example.com', '0412345679'),
@@ -22,7 +20,6 @@ INSERT INTO guardian (guardian_id, address_id, first_name, last_name, dob, email
 (7, 7, 'James', 'Martinez', '1983-09-05', 'james.martinez@example.com', '0412345684'),
 (8, 8, 'Patricia', 'Davis', '1984-12-20', 'patricia.davis@example.com', '0412345685');
 
--- Insert teachers
 INSERT INTO teacher (teacher_id, address_id, first_name, last_name, dob, email, phone) VALUES
 (1, 9, 'Alice', 'Wilson', '1985-02-15', 'alice.wilson@example.com', '0412345686'),
 (2, 10, 'David', 'Taylor', '1977-06-22', 'david.taylor@example.com', '0412345687'),
@@ -33,7 +30,6 @@ INSERT INTO teacher (teacher_id, address_id, first_name, last_name, dob, email, 
 (7, 5, 'Michael', 'Harris', '1981-01-05', 'michael.harris@example.com', '0412345692'),
 (8, 6, 'Emily', 'Clark', '1976-04-09', 'emily.clark@example.com', '0412345693');
 
--- Insert students
 INSERT INTO student (student_id, first_name, last_name, grade, dob, email, phone) VALUES
 (1, 'Olivia', 'Martinez', 7, '2010-01-10', 'olivia.martinez@example.com', '0412345694'),
 (2, 'Liam', 'Smith', 8, '2009-02-15', 'liam.smith@example.com', '0412345695'),
@@ -52,7 +48,6 @@ INSERT INTO student (student_id, first_name, last_name, grade, dob, email, phone
 (15, 'Amelia', 'Martinez', 10, '2007-03-20', 'amelia.martinez@example.com', '0412345708'),
 (16, 'Elijah', 'Davis', 11, '2006-04-25', 'elijah.davis@example.com', '0412345709');
 
--- Insert timetable
 INSERT INTO timetable (timetable_id, teacher_id, timetable_date) VALUES
 (1, 1, '2024-06-01'),
 (2, 2, '2024-06-01'),
@@ -63,7 +58,6 @@ INSERT INTO timetable (timetable_id, teacher_id, timetable_date) VALUES
 (7, 7, '2024-06-01'),
 (8, 8, '2024-06-01');
 
--- Insert relationships
 INSERT INTO relationship (relationship_id, student_id, guardian_id, relationship_type) VALUES
 (1, 1, 7, 'Parent'),
 (2, 2, 1, 'Parent'),
@@ -82,7 +76,6 @@ INSERT INTO relationship (relationship_id, student_id, guardian_id, relationship
 (15, 15, 1, 'Parent'),
 (16, 16, 2, 'Parent');
 
--- Insert subjects
 INSERT INTO subject (teacher_id, subject_name) VALUES
 (1, 'Mathematics Extension 2'),
 (1, 'Mathematics Extension 1'),
@@ -118,25 +111,110 @@ INSERT INTO subject (teacher_id, subject_name) VALUES
 
 -- Insert assessments
 INSERT INTO assessment (assessment_id, subject_id, assessment_name, max_mark, date_due) VALUES
-(1, 1, 'Algebra Test', 100, '2024-07-01'),
-(2, 2, 'Essay', 50, '2024-07-05'),
-(3, 3, 'Physics Exam', 100, '2024-07-10'),
-(4, 4, 'History Project', 100, '2024-07-15'),
-(5, 5, 'Geography Quiz', 50, '2024-07-20'),
-(6, 6, 'Fitness Test', 100, '2024-07-25'),
-(7, 7, 'Painting', 50, '2024-07-30'),
-(8, 8, 'Music Performance', 100, '2024-08-01');
+(1, 1, 'Calculus Test', 100, '2024-07-15'),
+(2, 1, 'Algebra Assignment', 50, '2024-08-10'),
+(3, 1, 'Statistics Project', 75, '2024-09-05'),
+(4, 2, 'Integration Exam', 100, '2024-07-18'),
+(5, 2, 'Function Analysis Assignment', 50, '2024-08-12'),
+(6, 2, 'Probability Project', 75, '2024-09-07'),
+(7, 3, 'Trigonometry Test', 100, '2024-07-20'),
+(8, 3, 'Geometry Assignment', 50, '2024-08-15'),
+(9, 3, 'Calculus Project', 75, '2024-09-10'),
+(10, 4, 'Arithmetic Exam', 100, '2024-07-22'),
+(11, 4, 'Statistics Assignment', 50, '2024-08-17'),
+(12, 4, 'Number Theory Project', 75, '2024-09-12'),
+(13, 5, 'Geometry Test', 100, '2024-07-25'),
+(14, 5, 'Algebra Assignment', 50, '2024-08-20'),
+(15, 5, 'Trigonometry Project', 75, '2024-09-15'),
+(16, 6, 'Measurement Test', 100, '2024-07-27'),
+(17, 6, 'Probability Assignment', 50, '2024-08-22'),
+(18, 6, 'Statistics Project', 75, '2024-09-17'),
+(19, 7, 'Art Theory Exam', 100, '2024-07-30'),
+(20, 7, 'Painting Assignment', 50, '2024-08-25'),
+(21, 7, 'Sculpture Project', 75, '2024-09-20'),
+(22, 8, 'Digital Design Test', 100, '2024-08-01'),
+(23, 8, 'Multimedia Assignment', 50, '2024-08-27'),
+(24, 8, 'Animation Project', 75, '2024-09-22'),
+(25, 9, 'Music Theory Exam', 100, '2024-08-05'),
+(26, 9, 'Performance Assignment', 50, '2024-08-30'),
+(27, 9, 'Composition Project', 75, '2024-09-25'),
+(28, 10, 'Textile Theory Exam', 100, '2024-08-08'),
+(29, 10, 'Design Assignment', 50, '2024-09-02'),
+(30, 10, 'Fabrication Project', 75, '2024-09-28'),
+(31, 11, 'Drama Theory Exam', 100, '2024-08-12'),
+(32, 11, 'Acting Assignment', 50, '2024-09-07'),
+(33, 11, 'Production Project', 75, '2024-10-02'),
+(34, 12, 'Photography Theory Exam', 100, '2024-08-15'),
+(35, 12, 'Photoshoot Assignment', 50, '2024-09-10'),
+(36, 12, 'Portfolio Project', 75, '2024-10-05'),
+(37, 13, 'Literature Test', 100, '2024-08-20'),
+(38, 13, 'Essay Assignment', 50, '2024-09-15'),
+(39, 13, 'Presentation Project', 75, '2024-10-10'),
+(40, 14, 'Reading Comprehension Test', 100, '2024-08-22'),
+(41, 14, 'Writing Assignment', 50, '2024-09-17'),
+(42, 14, 'Research Project', 75, '2024-10-12'),
+(43, 15, 'Poetry Analysis Test', 100, '2024-08-25'),
+(44, 15, 'Literary Essay Assignment', 50, '2024-09-20'),
+(45, 15, 'Creative Writing Project', 75, '2024-10-15'),
+(46, 16, 'Literature Review Exam', 100, '2024-08-28'),
+(47, 16, 'Critical Essay Assignment', 50, '2024-09-23'),
+(48, 16, 'Thesis Project', 75, '2024-10-20'),
+(49, 17, 'Dialect Test', 100, '2024-09-01'),
+(50, 17, 'Language Assignment', 50, '2024-09-27'),
+(51, 17, 'Cultural Study Project', 75, '2024-10-25'),
+(52, 18, 'Religion Theory Exam', 100, '2024-09-05'),
+(53, 18, 'Essay Assignment', 50, '2024-09-30'),
+(54, 18, 'Presentation Project', 75, '2024-10-30'),
+(55, 19, 'Religious Texts Test', 100, '2024-09-07'),
+(56, 19, 'Reflection Assignment', 50, '2024-10-02'),
+(57, 19, 'Research Project', 75, '2024-11-01'),
+(58, 20, 'Catholic Studies Exam', 100, '2024-09-10'),
+(59, 20, 'Doctrine Assignment', 50, '2024-10-05'),
+(60, 20, 'Theology Project', 75, '2024-11-05'),
+(61, 21, 'Software Development Test', 100, '2024-09-15'),
+(62, 21, 'Coding Assignment', 50, '2024-10-10'),
+(63, 21, 'Development Project', 75, '2024-11-10'),
+(64, 22, 'Information Systems Test', 100, '2024-09-20'),
+(65, 22, 'Data Management Assignment', 50, '2024-10-15'),
+(66, 22, 'Systems Project', 75, '2024-11-15'),
+(67, 23, 'Physics Theory Exam', 100, '2024-09-25'),
+(68, 23, 'Lab Report Assignment', 50, '2024-10-20'),
+(69, 23, 'Research Project', 75, '2024-11-20'),
+(70, 24, 'Chemistry Theory Exam', 100, '2024-09-27'),
+(71, 24, 'Experiment Assignment', 50, '2024-10-22'),
+(72, 24, 'Chemical Analysis Project', 75, '2024-11-22'),
+(73, 25, 'Biology Theory Exam', 100, '2024-09-30'),
+(74, 25, 'Field Study Assignment', 50, '2024-10-25'),
+(75, 25, 'Research Project', 75, '2024-11-25'),
+(76, 26, 'Modern History Exam', 100, '2024-10-05'),
+(77, 26, 'Essay Assignment', 50, '2024-11-02'),
+(78, 26, 'Research Project', 75, '2024-12-02'),
+(79, 27, 'Ancient History Exam', 100, '2024-10-10'),
+(80, 27, 'Artifact Analysis Assignment', 50, '2024-11-05'),
+(81, 27, 'Historical Study Project', 75, '2024-12-05'),
+(82, 28, 'Geography Exam', 100, '2024-10-12'),
+(83, 28, 'Map Analysis Assignment', 50, '2024-11-07'),
+(84, 28, 'Fieldwork Project', 75, '2024-12-07'),
+(85, 29, 'Business Theory Exam', 100, '2024-10-15'),
+(86, 29, 'Case Study Assignment', 50, '2024-11-10'),
+(87, 29, 'Market Analysis Project', 75, '2024-12-10'),
+(88, 30, 'Commerce Exam', 100, '2024-10-20'),
+(89, 30, 'Trade Analysis Assignment', 50, '2024-11-15'),
+(90, 30, 'Economic Project', 75, '2024-12-15'),
+(91, 31, 'Law Theory Exam', 100, '2024-10-25'),
+(92, 31, 'Case Study Assignment', 50, '2024-11-20'),
+(93, 31, 'Legal Research Project', 75, '2024-12-20');
 
--- Insert behaviours
-INSERT INTO behaviour (behaviour_id, subject_id, comment, comment_date) VALUES
-('1', 1, 'Excellent participation', '2024-05-01'),
-('2', 2, 'Needs improvement in writing skills', '2024-05-02'),
-('3', 3, 'Great understanding of concepts', '2024-05-03'),
-('4', 4, 'Good effort in project', '2024-05-04'),
-('5', 5, 'Active subject participation', '2024-05-05'),
-('6', 6, 'Outstanding performance', '2024-05-06'),
-('7', 7, 'Creative artwork', '2024-05-07'),
-('8', 8, 'Excellent musical skills', '2024-05-08');
+
+INSERT INTO behaviour (student_id, subject_id, comment, comment_date) VALUES
+(1, 1, 'Excellent participation', '2024-05-01'),
+(2, 2, 'Needs improvement in writing skills', '2024-05-02'),
+(3, 3, 'Great understanding of concepts', '2024-05-03'),
+(4, 4, 'Good effort in project', '2024-05-04'),
+(5, 5, 'Active subject participation', '2024-05-05'),
+(6, 6, 'Outstanding performance', '2024-05-06'),
+(7, 7, 'Creative artwork', '2024-05-07'),
+(8, 8, 'Excellent musical skills', '2024-05-08');
 
 INSERT INTO student_subjects (student_subjects_id, subject_id, student_id) VALUES
 (1, 1, 1),

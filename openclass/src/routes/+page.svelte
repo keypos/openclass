@@ -1,12 +1,11 @@
 <script>
     import Navbar from "./Navbar.svelte";
     import Timetable from "./Timetable.svelte";
-    import User from "./User.svelte";
 </script>
 
 <Navbar />
 <div class="row">
-    <div class="column"><User /><Timetable /></div>
+    <div class="column"><Timetable /></div>
     <div class="column"></div>
     <div class="column"></div>
   </div>
