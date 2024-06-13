@@ -5,6 +5,8 @@
     import { page } from '$app/stores'
     const student_id = $page.params.student_id
 
+    let comment = "";
+
     type Student = {
       student_id: number;
       first_name: string;
@@ -80,11 +82,15 @@
             body: JSON.stringify({
                 student_id: student_id,
                 subject_id: behaviourId,
-                comment: 'test'
+                comment_date: new Date(),
+                comment: comment
             })
         })
         if (response.ok) {
             alert('Behaviour comment added successfully')
+            behaviourId = "";
+            comment = "";
+            goto(`/students/${student_id}`)
         } else {
             alert('Failed to add behaviour comment')
         }
@@ -126,7 +132,7 @@
                 <option value={subject.subject_id}>{subject.subject_name}</option>
             {/each}
         </select>
-        <textarea placeholder="Behaviour comment"></textarea>
+        <textarea bind:value={comment} placeholder="Behaviour comment"></textarea>
         <button on:click={addBehaviourComment}>Add Comment</button>
     </div>
 </div>

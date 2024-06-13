@@ -72,9 +72,11 @@ CREATE TABLE assessment (
 CREATE TABLE behaviour (
     behaviour_id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INT,
+    student_id INT,
     comment TEXT NOT NULL,
     comment_date DATE NOT NULL,
-    FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
+    FOREIGN KEY (student_id) REFERENCES student(student_id)
 );
 
 CREATE TABLE period (

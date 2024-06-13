@@ -1,4 +1,3 @@
--- Ensure each teacher has a timetable entry for each day
 WITH RECURSIVE DateRange AS (
     SELECT DATE('2023-05-07') AS date
     UNION ALL
@@ -11,7 +10,6 @@ SELECT t.teacher_id, dr.date
 FROM teacher t
 CROSS JOIN DateRange dr;
 
--- Insert up to 6 random periods per day per teacher
 WITH RandomPeriods AS (
     SELECT
         t.timetable_id,

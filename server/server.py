@@ -213,6 +213,14 @@ def create_assessment():
     
     return jsonify({"message": "Assessment created"})
 
+@app.route("/comment", methods=["POST"])
+def create_comment():
+    comment = request.json
+    db.session.execute(text("INSERT INTO behaviour (comment, student_id, subject_id, comment_date) VALUES (:comment, :student_id, :subject_id, :comment_date)"), comment)
+    db.session.commit()
+    
+    return jsonify({"message": "Comment created"})
+
 @app.route("/students/<int:id>", methods=["PUT"])
 def update_student(id):
     student = request.json
