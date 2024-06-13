@@ -1,19 +1,19 @@
-<script lang=ts>
+<script lang="ts">
     import Navbar from "../../Navbar.svelte";
-    import { onMount } from 'svelte'
-    import { goto } from '$app/navigation'
-    import { page } from '$app/stores'
-    const student_id = $page.params.student_id
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
+    const student_id = $page.params.student_id;
 
     let comment = "";
 
     type Student = {
-      student_id: number;
-      first_name: string;
-      last_name: string;
-      email: string;
-      phone: string;
-      grade: string;
+        student_id: number;
+        first_name: string;
+        last_name: string;
+        email: string;
+        phone: string;
+        grade: string;
     };
 
     let student: Student;
@@ -28,48 +28,57 @@
 
     let behaviourId: number;
 
+    type Comment = {
+        comment_id: number;
+        student_id: number;
+        subject_id: number;
+        comment_date: Date;
+        comment: string;
+    };
+
+    let comments: Comment[] = [];
+
     function changeColor() {
         const selectElement = document.querySelector('.teachers') as HTMLElement;
         if (selectElement) {
-          selectElement.style.color = '#333';
+            selectElement.style.color = '#333';
         }
     }
 
     async function fetchSubjects() {
         const response = await fetch('http://localhost:5000/subjects');
         subjects = await response.json();
-        console.log(subjects);
     }
 
     async function studentInfo() {
-        const response = await fetch(`http://localhost:5000/students/${student_id}`)
-        student = await response.json()
+        const response = await fetch(`http://localhost:5000/students/${student_id}`);
+        student = await response.json();
     }
 
     async function updateStudent() {
         const response = await fetch(`http://localhost:5000/students/${student_id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(student)
-        })
+            body: JSON.stringify(student),
+        });
         if (response.ok) {
-            alert('Student updated successfully')
+            alert('Student updated successfully');
         } else {
-            alert('Failed to update student')
+            alert('Failed to update student');
         }
     }
 
     async function deleteStudent() {
         const response = await fetch(`http://localhost:5000/students/${student_id}`, {
             method: 'DELETE',
-        })
+        });
         if (response.ok) {
-            alert('Student deleted successfully')
-            goto('/students')
+            alert('Student deleted successfully');
+            goto('/students');
         } else {
-            alert('Failed to delete student')
+            alert('Failed to delete student');
         }
     }
 
@@ -77,30 +86,36 @@
         const response = await fetch(`http://localhost:5000/comment`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 student_id: student_id,
                 subject_id: behaviourId,
-                comment_date: new Date(),
-                comment: comment
-            })
-        })
+                comment_date: new Date().toISOString().split('T')[0],
+                comment: comment,
+            }),
+        });
         if (response.ok) {
-            alert('Behaviour comment added successfully')
+            alert('Behaviour comment added successfully');
             behaviourId = "";
             comment = "";
-            goto(`/students/${student_id}`)
+            getBehaviourComments();
         } else {
-            alert('Failed to add behaviour comment')
+            alert('Failed to add behaviour comment');
         }
     }
 
+    async function getBehaviourComments() {
+        const response = await fetch(`http://localhost:5000/comment/${student_id}`);
+        comments = await response.json();
+        console.log(comments);
+    }
+
     onMount(async () => {
+        await getBehaviourComments();
         await fetchSubjects();
         await studentInfo();
     });
-
 </script>
 
 <Navbar />
@@ -112,7 +127,7 @@
             <input bind:value={student.first_name}/>
             <p>Last Name</p>
             <input bind:value={student.last_name}/>
-            <p>Email Name</p>
+            <p>Email</p>
             <input bind:value={student.email}/>
             <p>Phone Number</p>
             <input bind:value={student.phone}/>
@@ -124,24 +139,37 @@
             Loading...
         {/if}
     </div>
-    <div class=details>
+    <div class="details">
         <h2>Behaviour Comments</h2>
-        <select id="searchSubject" class="teachers" bind:value={behaviourId} on:change={changeColor}>
-            <option value="" disabled hidden selected>Select subject</option>
-            {#each subjects as subject (subject.subject_id)}
-                <option value={subject.subject_id}>{subject.subject_name}</option>
+        <div class="comment-input">
+            <select id="searchSubject" class="teachers" bind:value={behaviourId} on:change={changeColor}>
+                <option value="" disabled hidden selected>Select subject</option>
+                {#each subjects as subject (subject.subject_id)}
+                    <option value={subject.subject_id}>{subject.subject_name}</option>
+                {/each}
+            </select>
+            <textarea bind:value={comment} placeholder="Behaviour comment"></textarea>
+            <button on:click={addBehaviourComment}>Add Comment</button>
+        </div>
+        <div class="comment-list">
+            {#each comments as comment (comment.behaviour_id)}
+                <a href="./comments/{comment.behaviour_id}">
+                    <div class="comment-card">
+                        <b>{comment.comment_date}</b>
+                        <p>{comment.comment}</p>
+                    </div>
+                </a>
             {/each}
-        </select>
-        <textarea bind:value={comment} placeholder="Behaviour comment"></textarea>
-        <button on:click={addBehaviourComment}>Add Comment</button>
+        </div>
     </div>
 </div>
 
 <style>
     .container {
+        padding-top: 40px;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         height: 100vh;
         margin: 0;
     }
@@ -152,6 +180,28 @@
         padding: 30px;
         width: 300px;
         margin: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment-input {
+        margin-bottom: 20px;
+    }
+
+    .comment-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    .comment-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 12px;
+        border: 1px solid #ddd;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     h2 {
@@ -227,6 +277,10 @@
         box-sizing: border-box;
         font-size: 16px;
         height: 128px;
-        resize:none;
+        resize: none;
+    }
+
+    a {
+        text-decoration: none;
     }
 </style>
