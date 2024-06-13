@@ -20,15 +20,15 @@ INSERT INTO guardian (guardian_id, address_id, first_name, last_name, dob, email
 (7, 7, 'James', 'Martinez', '1983-09-05', 'james.martinez@example.com', '0412345684'),
 (8, 8, 'Patricia', 'Davis', '1984-12-20', 'patricia.davis@example.com', '0412345685');
 
-INSERT INTO teacher (teacher_id, address_id, first_name, last_name, dob, email, phone) VALUES
-(1, 9, 'Alice', 'Wilson', '1985-02-15', 'alice.wilson@example.com', '0412345686'),
-(2, 10, 'David', 'Taylor', '1977-06-22', 'david.taylor@example.com', '0412345687'),
-(3, 1, 'Chris', 'Anderson', '1980-11-30', 'chris.anderson@example.com', '0412345688'),
-(4, 2, 'Emma', 'Thomas', '1982-03-14', 'emma.thomas@example.com', '0412345689'),
-(5, 3, 'Daniel', 'Jackson', '1979-07-18', 'daniel.jackson@example.com', '0412345690'),
-(6, 4, 'Sophia', 'White', '1983-09-24', 'sophia.white@example.com', '0412345691'),
-(7, 5, 'Michael', 'Harris', '1981-01-05', 'michael.harris@example.com', '0412345692'),
-(8, 6, 'Emily', 'Clark', '1976-04-09', 'emily.clark@example.com', '0412345693');
+INSERT INTO teacher (teacher_id, address_id, first_name, last_name, dob, email, phone, password) VALUES
+(1, 9, 'Alice', 'Wilson', '1985-02-15', 'alice.wilson@example.com', '0412345686', 'Password123'),
+(2, 10, 'David', 'Taylor', '1977-06-22', 'david.taylor@example.com', '0412345687', 'Password456'),
+(3, 1, 'Chris', 'Anderson', '1980-11-30', 'chris.anderson@example.com', '0412345688', 'Password789'),
+(4, 2, 'Emma', 'Thomas', '1982-03-14', 'emma.thomas@example.com', '0412345689', 'Wordpass123'),
+(5, 3, 'Daniel', 'Jackson', '1979-07-18', 'daniel.jackson@example.com', '0412345690', 'Wordpass456'),
+(6, 4, 'Sophia', 'White', '1983-09-24', 'sophia.white@example.com', '0412345691', 'Wordpass789'),
+(7, 5, 'Michael', 'Harris', '1981-01-05', 'michael.harris@example.com', '0412345692', 'Password99'),
+(8, 6, 'Emily', 'Clark', '1976-04-09', 'emily.clark@example.com', '0412345693', 'Wordpass99');
 
 INSERT INTO student (student_id, first_name, last_name, grade, dob, email, phone) VALUES
 (1, 'Olivia', 'Martinez', 7, '2010-01-10', 'olivia.martinez@example.com', '0412345694'),
@@ -109,7 +109,6 @@ INSERT INTO subject (teacher_id, subject_name) VALUES
 (8, 'Commerce'),
 (8, 'Law');
 
--- Insert assessments
 INSERT INTO assessment (assessment_id, subject_id, assessment_name, max_mark, date_due) VALUES
 (1, 1, 'Calculus Test', 100, '2024-07-15'),
 (2, 1, 'Algebra Assignment', 50, '2024-08-10'),

@@ -24,6 +24,7 @@ CREATE TABLE teacher (
     dob DATE NOT NULL,
     email VARCHAR(64) NOT NULL,
     phone VARCHAR(64) NOT NULL,
+    password VARCHAR(256) NOT NULL,
     FOREIGN KEY (address_id) REFERENCES address(address_id)
 );
 
