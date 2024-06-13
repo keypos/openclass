@@ -202,6 +202,7 @@
         border: 1px solid #ddd;
         width: 100%;
         box-sizing: border-box;
+        text-decoration: none;
     }
 
     h2 {
@@ -210,6 +211,10 @@
         margin-top: 0;
         margin-bottom: 20px;
         text-align: center;
+    }
+
+    b {
+        color: #000000;
     }
 
     p {
