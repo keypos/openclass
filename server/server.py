@@ -167,6 +167,17 @@ def assessment(id):
     assessment = {key: value for key, value in row._mapping.items()}
     return jsonify(assessment)
 
+@app.route("/comment/<int:id>")
+def comment(id):
+    result = db.session.execute(text(f"SELECT * FROM behaviour WHERE student_id = :id"), {"id": id})
+    
+    comments = []
+    for row in result:
+        comment = {key: value for key, value in row._mapping.items()}
+        comments.append(comment)
+    
+    return jsonify(comments)
+
 
 @app.route("/students/<int:id>", methods=["DELETE"])
 def delete_student(id):
