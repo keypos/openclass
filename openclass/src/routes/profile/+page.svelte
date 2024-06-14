@@ -1,13 +1,15 @@
 <script lang=ts>
     import Navbar from "../Navbar.svelte";
     let password = "";
+    let newassword = "";
 </script>
 
 <Navbar />
 
 <div class="login">
     <form on:submit|preventDefault={changePassword}>
-        <input type="password" placeholder="Password" bind:value={password} required>
+        <input type="password" placeholder="Old Password" bind:value={password} required>
+        <input type="password" placeholder="New Password" bind:value={password} required>
         <button type="submit">Change Password</button>
     </form>
 </div>
