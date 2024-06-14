@@ -70,6 +70,15 @@ CREATE TABLE assessment (
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
 );
 
+CREATE TABLE mark {
+    mark_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INT,
+    assessment_id INT,
+    mark INT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (assessment_id) REFERENCES assessment(assessment_id)
+}
+
 CREATE TABLE behaviour (
     behaviour_id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_id INT,
